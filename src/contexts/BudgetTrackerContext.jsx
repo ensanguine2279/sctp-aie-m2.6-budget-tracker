@@ -1,18 +1,37 @@
-import { useReducer } from "react";
+import { useReducer, useEffect } from "react";
 
-import { INITIAL_BUDGET_STATE } from "../data";
+import { SEED_TRANSACTIONS } from "../data";
 
 import { BudgetTrackerContext } from "./BudgetTrackerContextInstance";
 
 import { budgetTrackerReducer } from "../reducers/budgetTrackerReducer";
 
 export function BudgetTrackerProvider({ children }) {
-  const [state, dispatch] = useReducer(
-    budgetTrackerReducer,
-    INITIAL_BUDGET_STATE,
-  );
+  const [state, dispatch] = useReducer(budgetTrackerReducer, null, () => {
+    try {
+      const persistedTransactions = localStorage.getItem(
+        "budget_tracker_transactions",
+      );
+      return {
+        filter: "all",
+        transactions: persistedTransactions
+          ? JSON.parse(persistedTransactions)
+          : SEED_TRANSACTIONS,
+      };
+    } catch (error) {
+      console.error("Failed to parse persisted transactions:", error);
+      return { filter: "all", transactions: SEED_TRANSACTIONS };
+    }
+  });
 
   const { transactions } = state;
+
+  useEffect(() => {
+    localStorage.setItem(
+      "budget_tracker_transactions",
+      JSON.stringify(state.transactions),
+    );
+  }, [state.transactions]);
 
   const filteredTransactions = state.transactions.filter((tx) => {
     if (state.filter === "income") return tx.type === "income";
