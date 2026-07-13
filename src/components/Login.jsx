@@ -54,7 +54,7 @@ function Login() {
             Sign in to workspace
           </Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 4 }}>
-            Enter mock runtime credentials to process allocation logs.
+            Enter username and password
           </Typography>
 
           <Box
@@ -97,7 +97,7 @@ function Login() {
               disableElevation
               sx={{ textTransform: "none", fontWeight: 600 }}
             >
-              Authenticate Session
+              Login
             </Button>
           </Box>
         </CardContent>

@@ -2,6 +2,7 @@ import { useAuth } from "../contexts/AuthContextInstance";
 
 import Header from "./Header";
 import Summary from "./Summary";
+import RunningBalanceChart from "./RunningBalanceChart";
 import FilterBar from "./FilterBar";
 import TransactionList from "./TransactionList";
 import AddTransactionForm from "./AddTransactionForm";
@@ -26,6 +27,8 @@ function DashboardLayout() {
         sx={{ mt: 4, display: "flex", flexDirection: "column", gap: 4 }}
       >
         <Summary />
+        <RunningBalanceChart />
+
         <Stack spacing={2}>
           <FilterBar />
           <TransactionList />
