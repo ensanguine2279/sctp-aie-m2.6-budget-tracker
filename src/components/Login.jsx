@@ -9,18 +9,21 @@ import {
   Button,
   Card,
   CardContent,
+  FormControlLabel,
+  Checkbox,
 } from "@mui/material";
 
 function Login() {
   const { login } = useAuth();
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [rememberMe, setRememberMe] = useState(false);
   const [error, setError] = useState("");
 
   const handleSubmit = (e) => {
     e.preventDefault();
     setError("");
-    if (!login(username, password)) {
+    if (!login(username, password, rememberMe)) {
       setError("Invalid credentials. Try admin/password or viewer/password.");
     }
   };
@@ -81,6 +84,26 @@ function Login() {
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={rememberMe}
+                  onChange={(e) => setRememberMe(e.target.checked)}
+                  color="primary"
+                  size="small"
+                />
+              }
+              label={
+                <Typography
+                  variant="body2"
+                  sx={{ fontWeight: 500, userSelect: "none" }}
+                >
+                  Remember me
+                </Typography>
+              }
+              sx={{ mt: -1, mb: 0.5 }}
+            />
+
             {error && (
               <Typography
                 variant="caption"
