@@ -77,10 +77,10 @@ function RunningBalanceChart() {
           }}
         >
           <Typography variant="subtitle2" sx={{ fontWeight: 700 }}>
-            Net Balance Vector Trend
+            Running Balance Chart
           </Typography>
           <Typography variant="caption" color="text.secondary">
-            SVG vector timeline tracking historical cumulative ledger liquidity
+            Historical cumulative balance over transactions
           </Typography>
         </Box>
 

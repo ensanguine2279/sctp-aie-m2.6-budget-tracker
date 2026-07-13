@@ -12,6 +12,13 @@ export function budgetTrackerReducer(state, action) {
           (tx) => tx.id !== action.payload,
         ),
       };
+    case "UPDATE_TRANSACTION":
+      return {
+        ...state,
+        transactions: state.transactions.map((tx) =>
+          tx.id === action.payload.id ? action.payload : tx,
+        ),
+      };
     case "SET_FILTER":
       return { ...state, filter: action.payload };
     default:
