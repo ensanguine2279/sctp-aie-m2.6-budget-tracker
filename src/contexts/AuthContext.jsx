@@ -8,38 +8,51 @@ import { AuthContext } from "./AuthContextInstance";
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => {
     try {
-      const persistedUser = localStorage.getItem("budget_tracker_user");
-      return persistedUser ? JSON.parse(persistedUser) : null;
-    } catch (error) {
-      console.error("Failed to parse persisted user state:", error);
+      const rememberedUser = localStorage.getItem("budget_tracker_user");
+      if (rememberedUser) return JSON.parse(rememberedUser);
+
+      const sessionUser = sessionStorage.getItem("budget_tracker_user");
+      if (sessionUser) return JSON.parse(sessionUser);
+
+      return null;
+    } catch (e) {
       return null;
     }
   });
 
-  const login = (username, password) => {
-    const foundUser = USERS.find(
+  // Accept the rememberMe boolean to route the session data correctly
+  const login = (username, password, rememberMe) => {
+    const found = USERS.find(
       (u) =>
         u.username === username.toLowerCase().trim() && u.password === password,
     );
-    if (!foundUser) return false;
+    if (!found) return false;
 
     const sessionUser = {
-      id: foundUser.id,
-      username: foundUser.username,
-      role: foundUser.role,
-      name: foundUser.name,
+      id: found.id,
+      username: found.username,
+      role: found.role,
+      name: found.name,
     };
-
     setUser(sessionUser);
 
-    localStorage.setItem("budget_tracker_user", JSON.stringify(sessionUser));
-
+    // Explicit storage routing based on user preference
+    if (rememberMe) {
+      localStorage.setItem("budget_tracker_user", JSON.stringify(sessionUser));
+    } else {
+      sessionStorage.setItem(
+        "budget_tracker_user",
+        JSON.stringify(sessionUser),
+      );
+    }
     return true;
   };
 
+  // Clean up both buckets on logout to avoid identity leakage
   const logout = () => {
     setUser(null);
     localStorage.removeItem("budget_tracker_user");
+    sessionStorage.removeItem("budget_tracker_user");
   };
 
   const hasRole = (role) => {
