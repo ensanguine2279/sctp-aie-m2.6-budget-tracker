@@ -50,6 +50,10 @@ export function BudgetTrackerProvider({ children }) {
     dispatch({ type: "DELETE_TRANSACTION", payload: id });
   };
 
+  const updateTransaction = (transaction) => {
+    dispatch({ type: "UPDATE_TRANSACTION", payload: transaction });
+  };
+
   const setFilter = (filterValue) => {
     dispatch({ type: "SET_FILTER", payload: filterValue });
   };
@@ -61,6 +65,7 @@ export function BudgetTrackerProvider({ children }) {
         filteredTransactions,
         addTransaction,
         deleteTransaction,
+        updateTransaction,
         setFilter,
       }}
     >
